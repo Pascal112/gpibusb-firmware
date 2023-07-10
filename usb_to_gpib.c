@@ -2,7 +2,7 @@
 * GPIBUSB Adapter
 * usb_to_gpib.c
 **
-* © 2013-2014 Steven Casagrande (scasagrande@galvant.ca).
+* Â© 2013-2014 Steven Casagrande (scasagrande@galvant.ca).
 *
 * This file is a part of the GPIBUSB Adapter project.
 * Licensed under the AGPL version 3.
@@ -61,8 +61,8 @@ char mode = 1;
 char save_cfg = 1;
 unsigned int status_byte = 0;
 
-unsigned int32 timeout = 1000;
-unsigned int32 seconds = 0;
+unsigned long timeout = 1000;
+unsigned long seconds = 0;
 
 // Variables for device mode
 boolean device_talk = false;
@@ -189,12 +189,12 @@ char gpib_cmd(char *bytes, int length) {
 	return _gpib_write(bytes, length, 1, 0);
 }
 
-char gpib_write(char *bytes, int length, useEOI) {
+char gpib_write(char *bytes, int length, boolean useEOI) {
     // Write a GPIB data string to the bus
 	return _gpib_write(bytes, length, 0, useEOI);
 }
 
-char _gpib_write(char *bytes, int length, BOOLEAN attention, BOOLEAN useEOI) {
+char _gpib_write(char *bytes, int length, boolean attention, boolean useEOI) {
     /* 
     * Write a string of bytes to the bus
     * bytes: array containing characters to be written
@@ -807,7 +807,13 @@ void main(void) {
 #ifdef WITH_WDT
 		restart_wdt();
 #endif
-
+        if (input(FTDI_PWREN)) {
+            output_low(LED_ERROR);
+            output_high(PWREN);
+        } else {
+            output_high(LED_ERROR);
+            output_low(PWREN);
+        }
 		if(buf_in != buf_out) {
 			buf_pnt = buf_get(buf_pnt);
 			
