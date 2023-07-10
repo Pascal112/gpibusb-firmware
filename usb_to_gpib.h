@@ -2,7 +2,7 @@
 * GPIBUSB Adapter
 * usb_to_gpib.h
 **
-* © 2013-2014 Steven Casagrande (scasagrande@galvant.ca).
+* Â© 2013-2014 Steven Casagrande (scasagrande@galvant.ca).
 *
 * This file is a part of the GPIBUSB Adapter project.
 * Licensed under the AGPL version 3.
@@ -50,6 +50,9 @@
 
 #define LED_ERROR PIN_C5
 
+#define FTDI_PWREN PIN_D2
+#define PWREN PIN_D1
+
 #define CMD_DCL 0x14
 #define CMD_UNL 0x3f
 #define CMD_UNT 0x5f
@@ -60,7 +63,15 @@
 #define CMD_SPE 0x18
 #define CMD_SPD 0x19
 
+#define true 1
+#define false 0
+
+typedef unsigned char boolean;
+typedef unsigned char byte;
+
+
+
 extern char gpib_cmd( char *bytes, int length );
-extern char _gpib_write( char *bytes, int length, BOOLEAN attention, BOOLEAN useEOI);
+extern char _gpib_write( char *bytes, int length, boolean attention, boolean useEOI);
 
 extern char gpib_receive( char *byt );
